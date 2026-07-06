@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Daublet</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand" aria-label="Daublet">
+          <div class="brand-mark">D</div>
+          <strong>Daublet</strong>
+        </div>
+
+        <div class="top-actions" aria-label="File actions">
+          <button type="button" id="newDoc">New</button>
+          <button type="button" id="openProject">Open</button>
+          <button type="button" id="importImage">Import</button>
+          <button type="button" id="saveProject">Save</button>
+          <select id="exportFormat" aria-label="Export format">
+            <option value="image/png">PNG</option>
+            <option value="image/jpeg">JPEG</option>
+            <option value="image/webp">WebP</option>
+          </select>
+          <button type="button" id="exportImage">Export</button>
+        </div>
+
+        <div class="history-actions" aria-label="History actions">
+          <button type="button" id="undoBtn" title="Undo" aria-label="Undo">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7H4v5"/><path d="M4 12c3-5 12-7 16 1 1 2 1 4 0 6"/></svg>
+          </button>
+          <button type="button" id="redoBtn" title="Redo" aria-label="Redo">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 7h5v5"/><path d="M20 12c-3-5-12-7-16 1-1 2-1 4 0 6"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <nav class="toolrail" aria-label="Tools">
+          <button class="tool active" type="button" data-tool="select" title="Select" aria-label="Select">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3l11 10-6 1-2 6z"/></svg>
+          </button>
+          <button class="tool" type="button" data-tool="brush" title="Brush" aria-label="Brush">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c3 0 4-2 4-5"/><path d="M9 14L19 4l2 2-10 10z"/></svg>
+          </button>
+          <button class="tool" type="button" data-tool="eraser" title="Eraser" aria-label="Eraser">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15L14 5l6 6-7 7H7z"/><path d="M10 19h10"/></svg>
+          </button>
+          <button class="tool" type="button" data-tool="line" title="Line" aria-label="Line">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19L19 5"/></svg>
+          </button>
+          <button class="tool" type="button" data-tool="arrow" title="Arrow" aria-label="Arrow">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18L18 4"/><path d="M11 4h7v7"/></svg>
+          </button>
+          <button class="tool" type="button" data-tool="rect" title="Rectangle" aria-label="Rectangle">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="6" width="14" height="12"/></svg>
+          </button>
+          <button class="tool" type="button" data-tool="ellipse" title="Ellipse" aria-label="Ellipse">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="12" rx="7" ry="5"/></svg>
+          </button>
+          <button class="tool" type="button" data-tool="text" title="Text" aria-label="Text">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14"/><path d="M12 6v13"/><path d="M9 19h6"/></svg>
+          </button>
+        </nav>
+
+        <section class="canvas-area" aria-label="Artboard">
+          <div class="canvas-bar">
+            <label>W <input id="canvasWidth" type="number" min="64" max="8192" step="1" value="1280"></label>
+            <label>H <input id="canvasHeight" type="number" min="64" max="8192" step="1" value="720"></label>
+            <button type="button" id="resizeCanvas">Resize</button>
+            <label>Zoom <input id="zoomRange" type="range" min="15" max="200" value="75"></label>
+            <button type="button" id="fitCanvas">Fit</button>
+          </div>
+          <div class="stage-wrap" id="stageWrap">
+            <canvas id="artboard" width="1280" height="720"></canvas>
+          </div>
+        </section>
+
+        <aside class="inspector" aria-label="Inspector">
+          <section class="panel">
+            <h2>Style</h2>
+            <div class="control-grid">
+              <label>Stroke <input id="strokeColor" type="color" value="#111111"></label>
+              <label>Fill <input id="fillColor" type="color" value="#f97316"></label>
+              <label class="check"><input id="fillEnabled" type="checkbox"> Fill on</label>
+              <label>Width <input id="strokeWidth" type="number" min="1" max="80" value="4"></label>
+              <label>Opacity <input id="opacity" type="range" min="5" max="100" value="100"></label>
+              <label>Font <input id="fontSize" type="number" min="8" max="240" value="42"></label>
+            </div>
+            <textarea id="textValue" rows="3" placeholder="Text"></textarea>
+          </section>
+
+          <section class="panel">
+            <h2>Canvas</h2>
+            <div class="control-grid">
+              <label>Back <input id="backgroundColor" type="color" value="#ffffff"></label>
+              <label class="check"><input id="transparentCanvas" type="checkbox"> Transparent</label>
+            </div>
+          </section>
+
+          <section class="panel layers-panel">
+            <div class="panel-heading">
+              <h2>Layers</h2>
+              <div class="mini-actions" aria-label="Layer actions">
+                <button type="button" id="moveLayerUp" title="Move layer up" aria-label="Move layer up">Up</button>
+                <button type="button" id="moveLayerDown" title="Move layer down" aria-label="Move layer down">Down</button>
+                <button type="button" id="duplicateLayer" title="Duplicate layer" aria-label="Duplicate layer">Dup</button>
+                <button type="button" id="deleteLayer" title="Delete layer" aria-label="Delete layer">Del</button>
+              </div>
+            </div>
+            <div id="layers" class="layers"></div>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <input id="imageFile" type="file" accept="image/*" hidden>
+    <input id="projectFile" type="file" accept="application/json,.json,.daublet.json" hidden>
+
+    <script src="app.js"></script>
+  </body>
+</html>
