@@ -86,10 +86,12 @@
               <label>Fill <input id="fillColor" type="color" value="#f97316"></label>
               <label class="check"><input id="fillEnabled" type="checkbox"> Fill on</label>
               <label>Width <input id="strokeWidth" type="number" min="1" max="80" value="4"></label>
+              <label class="wide-control">Thickness <input id="strokeWidthRange" type="range" min="1" max="80" value="4"></label>
               <label>Opacity <input id="opacity" type="range" min="5" max="100" value="100"></label>
               <label>Font <input id="fontSize" type="number" min="8" max="240" value="42"></label>
             </div>
-            <textarea id="textValue" rows="3" placeholder="Text"></textarea>
+            <button class="panel-action" type="button" id="addTextBox">Text box</button>
+            <textarea id="textValue" rows="3" placeholder="Type text"></textarea>
           </section>
 
           <section class="panel">

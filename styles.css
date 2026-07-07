@@ -313,6 +313,19 @@ textarea {
   width: 100%;
 }
 
+.wide-control {
+  grid-column: 1 / -1;
+}
+
+.wide-control input[type="range"] {
+  width: 100%;
+}
+
+.panel-action {
+  width: 100%;
+  margin-top: 12px;
+}
+
 .check {
   align-content: end;
   grid-auto-flow: column;

@@ -25,8 +25,10 @@ const els = {
   fillColor: document.getElementById("fillColor"),
   fillEnabled: document.getElementById("fillEnabled"),
   strokeWidth: document.getElementById("strokeWidth"),
+  strokeWidthRange: document.getElementById("strokeWidthRange"),
   opacity: document.getElementById("opacity"),
   fontSize: document.getElementById("fontSize"),
+  addTextBox: document.getElementById("addTextBox"),
   textValue: document.getElementById("textValue"),
   backgroundColor: document.getElementById("backgroundColor"),
   transparentCanvas: document.getElementById("transparentCanvas"),
@@ -422,6 +424,28 @@ function addObject(object) {
   render();
 }
 
+function createTextObject(point, textValue = "Text") {
+  return {
+    ...makeBase("text"),
+    x: point.x,
+    y: point.y,
+    fill: state.style.fillEnabled ? state.style.fill : state.style.stroke,
+    text: textValue
+  };
+}
+
+function addTextBox() {
+  pushHistory();
+  const text = createTextObject({
+    x: Math.round(canvas.width * 0.5 - state.style.fontSize),
+    y: Math.round(canvas.height * 0.5)
+  });
+  addObject(text);
+  setTool("select");
+  els.textValue.focus();
+  els.textValue.select();
+}
+
 function deleteSelected() {
   if (!state.selectedId) {
     return;
@@ -697,6 +721,7 @@ function syncControlsFromSelection() {
     els.fillEnabled.checked = state.style.fillEnabled;
   }
   els.strokeWidth.value = source.strokeWidth || state.style.strokeWidth;
+  els.strokeWidthRange.value = source.strokeWidth || state.style.strokeWidth;
   els.opacity.value = Math.round((source.opacity ?? state.style.opacity) * 100);
   els.fontSize.value = source.fontSize || state.style.fontSize;
   els.textValue.value = object && object.type === "text" ? object.text : "";
@@ -745,6 +770,15 @@ function setFillEnabled(enabled) {
   }
   state.style.fillEnabled = enabled;
   render();
+}
+
+function setStrokeWidth(value) {
+  const width = clampInt(value, 1, 80);
+  els.strokeWidth.value = width;
+  els.strokeWidthRange.value = width;
+  applyStyleChange((target) => {
+    target.strokeWidth = width;
+  });
 }
 
 function setZoom(zoom) {
@@ -838,15 +872,10 @@ function handlePointerDown(event) {
   }
 
   if (state.tool === "text") {
-    const text = {
-      ...makeBase("text"),
-      x: point.x,
-      y: point.y,
-      fill: state.style.fillEnabled ? state.style.fill : state.style.stroke,
-      text: "Text"
-    };
-    addObject(text);
+    addObject(createTextObject(point));
     setTool("select");
+    els.textValue.focus();
+    els.textValue.select();
   }
 }
 
@@ -1102,9 +1131,11 @@ function wireEvents() {
   els.strokeColor.addEventListener("input", () => setStrokeColor(els.strokeColor.value));
   els.fillColor.addEventListener("input", () => setFillColor(els.fillColor.value));
   els.fillEnabled.addEventListener("change", () => setFillEnabled(els.fillEnabled.checked));
-  els.strokeWidth.addEventListener("change", () => applyStyleChange((target) => { target.strokeWidth = clampInt(els.strokeWidth.value, 1, 80); }));
+  els.strokeWidth.addEventListener("change", () => setStrokeWidth(els.strokeWidth.value));
+  els.strokeWidthRange.addEventListener("input", () => setStrokeWidth(els.strokeWidthRange.value));
   els.opacity.addEventListener("input", () => applyStyleChange((target) => { target.opacity = clamp(Number(els.opacity.value) / 100, 0.05, 1); }));
   els.fontSize.addEventListener("change", () => applyStyleChange((target) => { target.fontSize = clampInt(els.fontSize.value, 8, 240); }));
+  els.addTextBox.addEventListener("click", addTextBox);
 
   els.textValue.addEventListener("focus", () => {
     state.dirtyTextEdit = false;
