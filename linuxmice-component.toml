@@ -1,0 +1,36 @@
+schema_version = "linuxmice.component.v1"
+id = "katteke.daublet"
+display_name = "Daublet"
+version = "0.1.0"
+summary = "Standalone image composition application represented in LinuxMice as catalog metadata only."
+component_type = "catalog"
+standalone = true
+platforms = ["linux-desktop"]
+documentation = "https://docs.katteke.com/products/daublet/"
+
+[installation]
+package = "daublet"
+
+[capabilities]
+provides = ["app.daublet"]
+requires = []
+optional = []
+
+[interfaces]
+mode = "catalog-only"
+commands = []
+endpoints = []
+
+[authentication]
+required = []
+optional = []
+provides = []
+
+[data]
+ownership = "Daublet project files and images remain owned and controlled by the user."
+backup_responsibility = "Users or their organization back up Daublet project and export files."
+
+[health]
+kind = "none"
+read_only = true
+timeout_ms = 500

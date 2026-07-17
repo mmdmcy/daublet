@@ -40,6 +40,10 @@ node --check app.js
 If Node.js is not installed, open `index.html` and exercise import, shape,
 text, project save/open, and export manually.
 
+`linuxmice-component.toml` provides optional catalog metadata only. Daublet has
+no LinuxMice runtime dependency, health service, shared identity requirement,
+or shared database.
+
 ## Repository Status
 
 This repo is intended to be public/open source. Do not commit private host
